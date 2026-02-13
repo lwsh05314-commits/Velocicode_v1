@@ -1,0 +1,16 @@
+==========================================
+    VELOCICODE EXECUTOR V1
+==========================================
+
+INSTRUCTIONS FOR USE:
+1. Open your game.
+2. Launch the Velocicode Executor.
+3. Click 'ATTACH' to link the DLL to the game process.
+4. Paste your Lua script into the editor.
+5. Click 'EXECUTE'.
+
+Status: 🇧🇪 STABLE
+Injection Mode: Internal API
+Bypass: Enabled
+
+(C) 2026 VELOCICODE.
