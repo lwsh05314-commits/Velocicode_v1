@@ -30,3 +30,7 @@ tk.Button(btn_frame, text="ATTACH", command=attach, bg="#00ffcc", fg="black", wi
 tk.Button(btn_frame, text="EXECUTE", command=run_script, bg="#ffffff", fg="black", width=12, font=("Arial", 9, "bold")).grid(row=0, column=1, padx=10)
 
 root.mainloop()
+# Update this line in your launcher!
+with open("v_core.lua", "r") as f:
+    lua_code = f.read()
+
