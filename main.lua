@@ -52,3 +52,34 @@ V_Icon.InputEnded:Connect(function(input)
 end)
 
 print("Velocicode Internal Assets Loaded. Status: 🇧🇪 STABLE")
+
+import os
+from pathlib import Path
+import ctypes
+
+# This finds the EXACT folder where your script is sitting
+BASE_DIR = Path(__file__).parent 
+
+def attach():
+    dll_name = "vc_runtime_x64.dll"
+    lua_name = "v_core.lua"
+    
+    # Construct the full paths so it never misses them
+    dll_path = BASE_DIR / dll_name
+    lua_path = BASE_DIR / lua_name
+
+    if dll_path.exists() and lua_path.exists():
+        try:
+            # The "Secret Bridge" Injection
+            lib = ctypes.WinDLL(str(dll_path))
+            with open(lua_path, "r") as f:
+                script = f.read()
+            
+            # This 'adds the stuff' to Roblox
+            lib.Execute(script.encode('utf-8')) 
+            messagebox.showinfo("Velocicode", "Bypass Injected! 🇧🇪 Stable.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Injection failed: {e}")
+    else:
+        messagebox.showerror("404", "Missing vc_runtime_x64.dll or v_core.lua in folder!")
+
