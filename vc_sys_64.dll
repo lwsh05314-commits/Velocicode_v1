@@ -1,0 +1,32 @@
+import ctypes
+import psutil # You'll need to install this: pip install psutil
+
+def secret_inject():
+    dll_path = b"vc_sys_64.dll" # Your renamed secret module
+    process_name = "RobloxPlayerBeta.exe"
+    
+    # Find the Game Process
+    pid = None
+    for proc in psutil.process_iter():
+        if proc.name() == process_name:
+            pid = proc.pid
+            break
+
+    if pid:
+        # Open the game's "brain" (Memory)
+        process_handle = ctypes.windll.kernel32.OpenProcess(0x1F0FFF, False, pid)
+        
+        # Allocate space for our "Stuff"
+        arg_address = ctypes.windll.kernel32.VirtualAllocEx(process_handle, 0, len(dll_path), 0x1000, 0x40)
+        
+        # Write the DLL path into the game
+        ctypes.windll.kernel32.WriteProcessMemory(process_handle, arg_address, dll_path, len(dll_path), 0)
+        
+        # Start the "Secret Library" inside the game
+        module_addr = ctypes.windll.kernel32.GetModuleHandleA(b"kernel32.dll")
+        load_lib_addr = ctypes.windll.kernel32.GetProcAddress(module_addr, b"LoadLibraryA")
+        ctypes.windll.kernel32.CreateRemoteThread(process_handle, None, 0, load_lib_addr, arg_address, 0, None)
+        
+        print("Bypass Successful.  Velocicode Assets Loaded.")
+    else:
+        print("Game not found. Please open Roblox first.")
